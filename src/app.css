@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+		'Segoe UI Symbol', 'Noto Color Emoji';
+}
+@layer components {
+	.btn {
+		@apply rounded-xl py-2 px-4;
+	}
+
+	.btn-solid {
+		@apply btn bg-brand text-white;
+	}
+
+	.btn-outline {
+		@apply btn border-2 border-brand-soft;
+	}
+}
