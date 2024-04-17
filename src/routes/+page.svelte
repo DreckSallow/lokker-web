@@ -1,22 +1,24 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import CollectionCard from '../components/cards/collection_card.svelte';
+	import type { PageData } from './$types';
+	export let data: PageData;
 
-	let collections = [
-		{
-			authorImg: 'https://fakeimg.pl/200/',
-			alt: 'Avatar',
-			authorName: 'Dreck Sallow',
-			title: 'Rust ecosystem and more :)',
-			link: '/collection/1'
-		},
-		{
-			authorImg: 'https://fakeimg.pl/200/',
-			alt: 'Avatar',
-			authorName: 'Dreck Sallow',
-			title: 'Rust ecosystem and more :)',
-			link: '/collection/1'
+	function search(name?: string) {
+		goto(`?name=${name ?? ''}`);
+	}
+
+	function onBlurSearch(e: FocusEvent) {
+		let input = e.target as HTMLInputElement;
+		search(input.value);
+	}
+
+	function onEnter(e: KeyboardEvent) {
+		if (e.code == 'Enter') {
+			let input = e.target as HTMLInputElement;
+			search(input.value);
 		}
-	];
+	}
 </script>
 
 <main class="px-10 py-2">
@@ -40,11 +42,13 @@
 				class="outline-none flex-1 px-4 py-3 text-brand placeholder:text-neutral-400"
 				placeholder="Buscar collecciones..."
 				spellcheck="false"
+				on:blur="{onBlurSearch}"
+				on:keyup="{onEnter}"
 			/>
 		</div>
 	</header>
-	<!--<hr class="h-[1px] bg-neutral-400 mt-4" />-->
 	<section class="mt-8">
+		{#await data.collections} Loading collections for you :).... {:then collections}
 		<ul class="mx-auto grid grid-cols-3 gap-6 justify-start">
 			{#each collections as coll}
 			<CollectionCard
@@ -57,5 +61,6 @@
 			/>
 			{/each}
 		</ul>
+		{:catch _err} Error loading collections :( {/await}
 	</section>
 </main>
