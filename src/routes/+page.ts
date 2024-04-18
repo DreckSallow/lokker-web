@@ -3,7 +3,7 @@ import type { PageLoad } from "./$types";
 function wait(): Promise<string> {
   return new Promise((res, _rej) => {
     setTimeout(() => {
-      console.log("Pass 4 second");
+      console.log("Pass 2 second");
       res("");
     }, 2000);
   });
@@ -16,14 +16,16 @@ async function get_posts(nameFilter: string) {
       alt: 'Avatar',
       authorName: 'Dreck Sallow',
       title: 'Rust ecosystem and more :)',
-      link: '/collection/1'
+      link: '/collections/2/1',
+      profile_id: 1
     },
     {
       authorImg: 'https://fakeimg.pl/200/',
       alt: 'Avatar',
       authorName: 'Linus torvalds',
       title: 'Learn actix_web rust framework',
-      link: '/collection/1'
+      link: '/collections/1/1',
+      profile_id: 2
     }
   ].filter(({ title }) => title.includes(nameFilter));
 }

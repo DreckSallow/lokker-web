@@ -56,6 +56,7 @@
 				authorImg="{coll.authorImg}"
 				alt="{coll.alt}"
 				authorName="{coll.authorName}"
+				profile_id="{coll.profile_id}"
 				link="{coll.link}"
 				title="{coll.title}"
 			/>

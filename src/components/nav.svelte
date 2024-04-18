@@ -1,7 +1,7 @@
 <script lang="ts"></script>
 <nav class="flex align-center justify-between py-4 px-6">
 	<div>
-		<h2 class="text-brand italic font-semibold text-xl">Lokker</h2>
+		<a class="text-brand italic font-semibold text-xl" href="/">Lokker</a>
 	</div>
 	<ul class="flex gap-4">
 		<li>
