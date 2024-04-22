@@ -5,6 +5,9 @@
 	export let data: PageData;
 
 	function search(name?: string) {
+		if (!name) {
+			return goto('/');
+		}
 		goto(`?name=${name ?? ''}`);
 	}
 
@@ -48,20 +51,20 @@
 		</div>
 	</header>
 	<section class="mt-8">
-		{#await data.collections} Loading collections for you :).... {:then collections}
+		{#await data.res} Loading collections... {:then res} {#if res.items.length > 0}
 		<ul class="mx-auto grid grid-cols-3 gap-6 justify-start">
-			{#each collections as coll}
+			{#each res.items as coll}
 			<CollectionCard
 				tag="li"
-				authorImg="{coll.authorImg}"
+				authorImg="{coll.authorImg} //FIXME: Add cors to allow frontend requests"
 				alt="{coll.alt}"
-				authorName="{coll.authorName}"
-				profile_id="{coll.profile_id}"
-				link="{coll.link}"
-				title="{coll.title}"
+				authorName="{coll.user_username}"
+				profile_id="{coll.user_id}"
+				link="{`/collections/${coll.collection_id}`}"
+				title="{coll.name}"
 			/>
 			{/each}
 		</ul>
-		{:catch _err} Error loading collections :( {/await}
+		{:else} No hay datos {/if} {:catch err} Ocurrio un error {err} {/await}
 	</section>
 </main>
