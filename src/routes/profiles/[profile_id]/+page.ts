@@ -1,27 +1,17 @@
 import type { PageLoad } from "./$types"
 
-export const load: PageLoad = async ({ params }) => {
+export const load: PageLoad = async ({ fetch, params }) => {
+  const user_id = params.profile_id;
+  async function getUserProfile() {
+    const res = await fetch("http://localhost:8000/profiles/" + user_id);
+    return await res.json();
+  }
+  async function getUserCollections() {
+    const res = await fetch("http://localhost:8000/collections/user/" + user_id);
+    return await res.json();
+  }
   return {
-    user_name: `User with id: ${params.profile_id}`,
-    user_img: "https://fakeimg.pl/200",
-    user_bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    twitter_link: "https://twitter.com/AzyThv9zgZ",
-    website_link: "www.arandade.com",
-    collections: [
-      {
-        authorImg: 'https://fakeimg.pl/200/',
-        alt: 'Avatar',
-        authorName: 'Dreck Sallow',
-        title: 'Rust ecosystem and more :)',
-        link: '/collection/1',
-      },
-      {
-        authorImg: 'https://fakeimg.pl/200/',
-        alt: 'Avatar',
-        authorName: 'Linus torvalds',
-        title: 'Learn actix_web rust framework',
-        link: '/collection/1',
-      }
-    ]
+    profile: await getUserProfile(),
+    collections: await getUserCollections()
   }
 }
