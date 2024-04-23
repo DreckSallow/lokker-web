@@ -1,40 +1,42 @@
 <script lang="ts">
 	import type { PageData } from '../../$types';
+	import SocialIcon from '../../../components/icons/socialIcon.svelte';
+	import Avatar from '../../../components/imgs/avatar.svelte';
 
 	export let data: PageData;
 </script>
 
-<main class="py-4">
-	<header class="bg-blue-200 flex gap-12 py-12 px-4 justify-center items-center">
-		<img
-			src="{data.profile.user_img}"
-			alt="{`${data.user_name} avatar`}"
-			class="rounded-full h-[200px] aspect-square"
+<main class="py-4 flex gap-4 items-start">
+	<aside class="sticky top-0 p-6 flex flex-col items-center max-w-[250px] w-[250px]">
+		<Avatar
+			src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR__2IIAULCR-xberpmuxf-9Jx3cJZLJgLm4tSb9cDwRQ&s"
+			abr="{data.profile.username.trim().at(0)}"
+			alt="user profile"
+			hClass="h-[180px]"
+			divClass="text-5xl font-bold"
 		/>
-		<section class="w-3/5 max-w-[600px]">
-			<h1 class="text-4xl font-bold mb-2">{data.profile.username}</h1>
-			<p class="text-neutral-700">{data.profile.bio}</p>
-			<div>
-				<h4 class="font-semibold text-xl mt-2">Social links</h4>
-				<ul class="mt-2">
-					<li>
-						<a href="{data.profile.twitter_url}" class="underline text-blue-400"
-							>{data.profile.twitter_url}</a
-						>
-					</li>
-					<li>
-						<a href="{data.profile.website_url}" class="underline text-blue-400"
-							>{data.profile.website_url}</a
-						>
-					</li>
-				</ul>
-			</div>
-		</section>
-	</header>
-	<section class="mt-3 px-6">
-		<h2 class="text-2xl font-bold mb-3">Collections</h2>
-		<ul class="grid grid-cols-3">
-			{#each data.collections as coll} {coll.name} {/each}
+		<h2 class="text-3xl font-bold mt-4">{data.profile.username}</h2>
+		<h4 class="mt-1">{data.profile.email}</h4>
+		<p class="mt-3 text-black">{data.profile.bio}</p>
+		<ul class="flex flex-row gap-6 mt-6">
+			<li>
+				<a href="{data.profile.website_url}" target="_blank">
+					<SocialIcon name="web" styleClass="h-7 w-7" />
+				</a>
+			</li>
+			<li>
+				<a href="{data.profile.twitter_url}" target="_blank">
+					<SocialIcon name="twitter" styleClass="h-7 w-7" />
+				</a>
+			</li>
+		</ul>
+	</aside>
+	<section class="p-8 flex-1 h-[200vh]">
+		<h2 class="text-3xl font-bold mb-3">Collections</h2>
+		<ul class="grid grid-cols-3 gap-6">
+			{#each data.collections as coll}
+			<li class="p-4 rounded-xl border border-neutral-400">{coll.name}</li>
+			{/each}
 		</ul>
 	</section>
 </main>
