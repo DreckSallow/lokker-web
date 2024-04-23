@@ -31,11 +31,20 @@
 			</li>
 		</ul>
 	</aside>
-	<section class="p-8 flex-1 h-[200vh]">
+	<section class="p-8 flex-1">
 		<h2 class="text-3xl font-bold mb-3">Collections</h2>
 		<ul class="grid grid-cols-3 gap-6">
 			{#each data.collections as coll}
-			<li class="p-4 rounded-xl border border-neutral-400">{coll.name}</li>
+			<li
+				class="p-4 rounded-xl border border-neutral-400 flex flex-col justify-between items-start"
+			>
+				<h4 class="font-semibold text-xl mb-3">{coll.name}</h4>
+				<a
+					href="{`/collections/${coll.collection_id}`}"
+					class="rounded-lg bg-neutral-700 text-white text-sm px-3.5 py-1 inline-block"
+					>See collection</a
+				>
+			</li>
 			{/each}
 		</ul>
 	</section>
