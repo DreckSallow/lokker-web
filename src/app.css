@@ -18,4 +18,12 @@ body {
 	.btn-outline {
 		@apply btn border-2 border-brand-soft;
 	}
+
+	.flex-center {
+		@apply flex items-center justify-center;
+	}
+
+	.ui-circle {
+		@apply rounded-full aspect-square;
+	}
 }
