@@ -56,7 +56,7 @@
 			{#each res.items as coll}
 			<CollectionCard
 				tag="li"
-				authorImg="{coll.authorImg} //FIXME: Add cors to allow frontend requests"
+				authorImg="{coll.authorImg}"
 				alt="{coll.alt}"
 				authorName="{coll.user_username}"
 				profile_id="{coll.user_id}"
