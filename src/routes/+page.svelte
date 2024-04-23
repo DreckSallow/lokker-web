@@ -62,6 +62,7 @@
 				profile_id="{coll.user_id}"
 				link="{`/collections/${coll.collection_id}`}"
 				title="{coll.name}"
+				total_articles="{coll.total_articles}"
 			/>
 			{/each}
 		</ul>
