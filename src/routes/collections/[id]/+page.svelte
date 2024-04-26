@@ -1,5 +1,28 @@
 <script lang="ts">
 	import type { PageData } from '../$types';
+	function getDate(timestamp: string) {
+		const date = new Date(timestamp);
+		const months = [
+			'January',
+			'February',
+			'March',
+			'April',
+			'May',
+			'June',
+			'July',
+			'August',
+			'September',
+			'October',
+			'November',
+			'December'
+		];
+
+		const monthName = months[date.getMonth()];
+		const day = date.getDate();
+		const year = date.getFullYear();
+
+		return `${monthName} ${day}, ${year}`;
+	}
 
 	export let data: PageData;
 
@@ -51,21 +74,29 @@
 	}
 </script>
 
-<main class="flex gap-6 mx-6 pt-1">
-	<nav class="w-[14rem] bg-green-200 p-4">
-		<ul class="border border-neutral-300 rounded-lg">
+<main class="flex gap-6 mx-10 pt-1 mt-6">
+	<nav class="w-[14rem] p-4 mt-10">
+		<ul class="border border-neutral-300 rounded-xl p-4">
 			{#each data.articles as article}
-			<li class="p-2">
-				<button on:click="{()=>getContent(article.article_id)}">{article.title}</button>
+			<li class="text-sm">
+				<button
+					on:click="{()=>getContent(article.article_id)}"
+					class="{`p-2 rounded-xl ${currentInfo.article?.article_id == article.article_id ? 'bg-neutral-100/80':'hover:underline' }`}"
+				>
+					{article.title}
+				</button>
 			</li>
 			{/each}
 		</ul>
 	</nav>
-	<section class="bg-red-300 flex-1 h-[300px]">
+	<section class="flex-1 h-[300px]">
 		{#if currentInfo.isLoading}
 		<span>Loading...</span>
 		{:else if currentInfo.article}
-		<h1 class="text-3xl font-bold mb-2 text-center">{currentInfo.article?.title}</h1>
+		<h1 class="text-3xl font-bold mb-4 text-center">{currentInfo.article?.title}</h1>
+		<span class="ml-auto text-neutral-600 text-sm mb-4 block w-max">
+			{getDate(currentInfo.article.update_at)}
+		</span>
 		<div>{currentInfo.article?.content}</div>
 		{:else if currentInfo.error}
 		<p>Error: {currentInfo.error}</p>
