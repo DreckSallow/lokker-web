@@ -1,5 +1,4 @@
 import type { PageLoad } from "./$types";
-
 export const load: PageLoad = async ({ fetch, url }) => {
   async function get() {
     let nameFilter = url.searchParams.get("name") || "";

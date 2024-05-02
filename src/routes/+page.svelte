@@ -26,7 +26,7 @@
 
 <main class="px-10 py-2">
 	<header>
-		<h1 class="font-bold text-4xl mb-2">Search Collections</h1>
+		<h1 class="font-bold text-4xl mb-2 mt-4">Search Collections</h1>
 		<h3 class="text-neutral-600 font-normal text-lg mb-6">Find the perfect read</h3>
 		<div
 			class="border border-neutral-400 rounded-xl flex justify-between overflow-hidden pl-3 w-[24rem]"
@@ -45,27 +45,35 @@
 				class="outline-none flex-1 px-4 py-3 text-brand placeholder:text-neutral-400"
 				placeholder="Buscar collecciones..."
 				spellcheck="false"
-				on:blur="{onBlurSearch}"
-				on:keyup="{onEnter}"
+				on:blur={onBlurSearch}
+				on:keyup={onEnter}
 			/>
 		</div>
 	</header>
 	<section class="mt-8">
-		{#await data.res} Loading collections... {:then res} {#if res.items.length > 0}
-		<ul class="mx-auto grid grid-cols-3 gap-6 justify-start">
-			{#each res.items as coll}
-			<CollectionCard
-				tag="li"
-				authorImg="{coll.authorImg}"
-				alt="{coll.alt}"
-				authorName="{coll.user_username}"
-				profile_id="{coll.user_id}"
-				link="{`/collections/${coll.collection_id}`}"
-				title="{coll.name}"
-				total_articles="{coll.total_articles}"
-			/>
-			{/each}
-		</ul>
-		{:else} No hay datos {/if} {:catch err} Ocurrio un error {err} {/await}
+		{#await data.res}
+			Loading collections...
+		{:then res}
+			{#if res.items.length > 0}
+				<ul class="mx-auto grid grid-cols-3 gap-6 justify-start">
+					{#each res.items as coll}
+						<CollectionCard
+							tag="li"
+							authorImg={coll.authorImg}
+							alt={coll.alt}
+							authorName={coll.user_username}
+							profile_id={coll.user_id}
+							link={`/collections/${coll.collection_id}`}
+							title={coll.name}
+							total_articles={coll.total_articles}
+						/>
+					{/each}
+				</ul>
+			{:else}
+				No hay datos
+			{/if}
+		{:catch err}
+			Ocurrio un error {err}
+		{/await}
 	</section>
 </main>
