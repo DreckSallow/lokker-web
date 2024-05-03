@@ -2,10 +2,12 @@
 	import type { PageData } from '../../$types';
 	import SocialIcon from '../../../components/icons/socialIcon.svelte';
 	import Avatar from '../../../components/imgs/avatar.svelte';
+	import AppNav from '../../../components/nav.svelte';
 
 	export let data: PageData;
 </script>
 
+<AppNav />
 <main class="py-4 flex gap-4 items-start">
 	<aside class="sticky top-0 p-6 flex flex-col items-center max-w-[250px] w-[250px]">
 		<Avatar

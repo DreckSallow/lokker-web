@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import CollectionCard from '../components/cards/collection_card.svelte';
 	import type { PageData } from './$types';
+	import CollectionCard from '../components/cards/collection_card.svelte';
+	import AppNav from '../components/nav.svelte';
 	export let data: PageData;
 
 	function search(name?: string) {
@@ -24,6 +25,7 @@
 	}
 </script>
 
+<AppNav />
 <main class="px-10 py-2">
 	<header>
 		<h1 class="font-bold text-4xl mb-2 mt-4">Search Collections</h1>

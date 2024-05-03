@@ -1,4 +1,5 @@
 <script lang="ts">
+	import AppNav from '../../../components/nav.svelte';
 	import type { PageData } from '../$types';
 	function getDate(timestamp: string) {
 		const date = new Date(timestamp);
@@ -74,32 +75,33 @@
 	}
 </script>
 
+<AppNav />
 <main class="flex gap-6 mx-10 pt-1 mt-6">
 	<nav class="w-[14rem] p-4 mt-10">
 		<ul class="border border-neutral-300 rounded-xl p-4">
 			{#each data.articles as article}
-			<li class="text-sm">
-				<button
-					on:click="{()=>getContent(article.article_id)}"
-					class="{`p-2 rounded-xl ${currentInfo.article?.article_id == article.article_id ? 'bg-neutral-100/80':'hover:underline' }`}"
-				>
-					{article.title}
-				</button>
-			</li>
+				<li class="text-sm">
+					<button
+						on:click={() => getContent(article.article_id)}
+						class={`p-2 rounded-xl ${currentInfo.article?.article_id == article.article_id ? 'bg-neutral-100/80' : 'hover:underline'}`}
+					>
+						{article.title}
+					</button>
+				</li>
 			{/each}
 		</ul>
 	</nav>
 	<section class="flex-1 h-[300px]">
 		{#if currentInfo.isLoading}
-		<span>Loading...</span>
+			<span>Loading...</span>
 		{:else if currentInfo.article}
-		<h1 class="text-3xl font-bold mb-4 text-center">{currentInfo.article?.title}</h1>
-		<span class="ml-auto text-neutral-600 text-sm mb-4 block w-max">
-			{getDate(currentInfo.article.update_at)}
-		</span>
-		<div>{currentInfo.article?.content}</div>
+			<h1 class="text-3xl font-bold mb-4 text-center">{currentInfo.article?.title}</h1>
+			<span class="ml-auto text-neutral-600 text-sm mb-4 block w-max">
+				{getDate(currentInfo.article.update_at)}
+			</span>
+			<div>{currentInfo.article?.content}</div>
 		{:else if currentInfo.error}
-		<p>Error: {currentInfo.error}</p>
+			<p>Error: {currentInfo.error}</p>
 		{/if}
 	</section>
 </main>
