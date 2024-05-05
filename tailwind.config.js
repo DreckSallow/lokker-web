@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        "page": "#fafafa", 
-        "overpage": "#ffffff", 
+        "overpage": "#fafafa", 
+        "page": "#ffffff", 
         "subtext":"#666666",
         "headtext":"#171717",
         "brand": "#141d26",
