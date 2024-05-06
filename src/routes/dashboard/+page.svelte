@@ -2,7 +2,7 @@
 	import type { PageData } from './$types';
 	import Avatar from '../../components/imgs/avatar.svelte';
 	import Text from '$lib/ui/components/text.svelte';
-	import type { UserProfile } from '$lib/types/user';
+	import type { UserProfile } from '$lib/types';
 	import { ArrowUpFromLine } from 'lucide-svelte';
 	export let data: PageData;
 	$: data.user.img =

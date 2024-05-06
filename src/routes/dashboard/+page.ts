@@ -1,4 +1,4 @@
-import type { UserProfile } from "$lib/types/user";
+import type { UserProfile } from "$lib/types";
 import type { PageLoad } from "./$types";
 
 export const load: PageLoad = async ({ fetch }) => {
