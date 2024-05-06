@@ -1,41 +1,20 @@
 <script lang="ts">
-	import type { Article, Collection } from '$lib/types/index.js';
 	export type { PageData } from './$types';
-	import Modal from '$lib/ui/components/modal.svelte';
 	import Text from '$lib/ui/components/text.svelte';
 	import ModalCreate from './modal-create.svelte';
+	import ModalDetail from './modal-detail.svelte';
 
 	export let data = PageData;
-	let modalShow = {
-		create: false
+	let modals = {
+		create: false,
+		details: false
 	};
 
 	function onCreate(e: CustomEvent) {
 		data.collections = [e.detail, ...data.collections];
 	}
 
-	let modalInfo: Modal | null = null;
-	let collInfo: {
-		collection: Collection;
-		articles: Pick<Article, 'article_id' | 'title' | 'update_at'>[];
-	} | null = null;
-
-	function getCollInfo(coll_id: number) {
-		fetch('http://localhost:8000/collections/' + coll_id, {
-			method: 'GET',
-			headers: {
-				Authorization: `Bearer ${JSON.parse(localStorage.getItem('auth') as any).token}`,
-				'Content-Type': 'Application/json'
-			}
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				collInfo = data;
-				modalInfo.show();
-			})
-			.catch(alert)
-			.finally(() => {});
-	}
+	let modalInfo: ModalDetail | null = null;
 </script>
 
 <section class="w-[70%] mx-auto my-12">
@@ -43,7 +22,7 @@
 		<Text tag="h1" class="mb-2 text-headtext">Collections</Text>
 		<Text tag="span" class="text-subtext">Create, Edit & Remove your collections</Text>
 	</header>
-	<button class="mb-6 block btn btn-solid" on:click={() => (modalShow.create = true)}>
+	<button class="mb-6 block btn btn-solid" on:click={() => (modals.create = true)}>
 		Create New
 	</button>
 
@@ -56,7 +35,10 @@
 			{#each data.collections as coll}
 				<li class="flex items-center justify-between gap-2 p-2 rounded-lg py-2 px-4">
 					<button
-						on:click={() => getCollInfo(coll.collection_id)}
+						on:click={() => {
+							modalInfo?.load(coll.collection_id);
+							modals.details = true;
+						}}
 						class="underline hover:no-underline underline-offset-2"
 					>
 						{coll.name}
@@ -69,29 +51,5 @@
 		Dont have any collections yet
 	{/if}
 </section>
-<ModalCreate bind:show={modalShow.create} on:create={onCreate} />
-<Modal bind:this={modalInfo}>
-	{#if collInfo}
-		<div class="p-4">
-			<Text tag="h2" class="mb-6">{collInfo?.collection.name}</Text>
-			<button class="btn btn-solid block text-sm mb-4">New Article</button>
-			{#if collInfo.articles.length > 0}
-				<ul class="flex flex-col gap-2">
-					{#each collInfo.articles as art}
-						<li class="flex items-center justify-between gap-2 p-2 rounded-lg py-2 px-4">
-							<button
-								on:click={() => alert('open details')}
-								class="underline hover:no-underline underline-offset-2"
-							>
-								{art.title}
-							</button>
-							<Text tag="span">{art.update_at}</Text>
-						</li>
-					{/each}
-				</ul>
-			{:else}
-				Dont have articles yet 😒.
-			{/if}
-		</div>
-	{/if}
-</Modal>
+<ModalCreate bind:show={modals.create} on:create={onCreate} />
+<ModalDetail bind:show={modals.details} bind:this={modalInfo} />
