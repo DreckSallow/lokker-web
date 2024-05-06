@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { X } from 'lucide-svelte';
+	import { createEventDispatcher } from 'svelte';
 	let dialog: HTMLDialogElement | null;
 
+	const dispatch = createEventDispatcher();
+
+	function closeEv() {
+		dispatch('close');
+	}
 	export function close() {
 		if (dialog) dialog.close();
 	}
@@ -12,18 +18,15 @@
 
 <dialog
 	bind:this={dialog}
-	on:close={() => close()}
-	on:click|self={() => close()}
-	on:keydown={() => {}}
+	on:close={() => closeEv()}
+	on:click|self={() => closeEv()}
+	on:keydown
 	class="rounded-xl"
 >
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div
-		on:click|stopPropagation
-		class="bg-white rounded-2xl p-6 relative pt-7 w-full h-full shadow-lg"
-	>
+	<div class="bg-white rounded-2xl p-6 relative pt-7 w-full h-full shadow-lg">
 		<button
-			on:click={close}
+			on:click={closeEv}
 			class="hover:bg-neutral-200/70 transition rounded-lg p-1 absolute top-1.5 right-1.5"
 		>
 			<X class="h-5 w-5" />
