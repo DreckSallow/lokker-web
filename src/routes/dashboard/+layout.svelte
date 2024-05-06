@@ -31,7 +31,7 @@
 					<a
 						href="/dashboard/collections"
 						class="flex gap-2 items-center font-semibold hover:bg-neutral-100 p-2 rounded-lg"
-						class:bg-neutral-200={$page.url.pathname == '/dashboard/collections'}
+						class:bg-neutral-200={$page.url.pathname.startsWith('/dashboard/collections')}
 					>
 						<Newspaper class="w-6 h-6" />
 						My Collections
