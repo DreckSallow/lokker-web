@@ -1,17 +1,37 @@
 <script lang="ts">
 	export type { PageData } from './$types';
+	import Checkbox from '$lib/ui/components/inputs/checkbox.svelte';
 	import Text from '$lib/ui/components/text.svelte';
 	import ModalCreate from './modal-create.svelte';
 	import ModalDetail from './modal-detail.svelte';
 
 	export let data = PageData;
+	function onCreate(e: CustomEvent) {
+		data.collections = [e.detail, ...data.collections];
+	}
 	let modals = {
 		create: false,
 		details: false
 	};
 
-	function onCreate(e: CustomEvent) {
-		data.collections = [e.detail, ...data.collections];
+	let checkAllInputs = false;
+	$: hasSelecteds = data.collections.some((c) => c.checked);
+
+	function onDelete() {
+		fetch('http://localhost:8000/collections', {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${JSON.parse(localStorage.getItem('auth') as any).token}`,
+				'Content-Type': 'Application/json'
+			},
+			body: JSON.stringify(data.collections.filter((c) => c.checked).map((c) => c.collection_id))
+		})
+			.then((d) => {
+				if (d.ok) {
+					data.collections = data.collections.filter((c) => !c.checked);
+				}
+			})
+			.catch(alert);
 	}
 
 	let modalInfo: ModalDetail | null = null;
@@ -27,29 +47,57 @@
 	</button>
 
 	{#if data.collections.length > 0}
-		<div class="flex items-center justify-between gap-2 bg-neutral-100 py-2 px-4 rounded-lg mb-2">
-			<Text tag="span" class="font-semibold">Name</Text>
-			<Text tag="span" class="font-semibold">Total Articles</Text>
-		</div>
-		<ul class="flex flex-col gap-2">
-			{#each data.collections as coll}
-				<li class="flex items-center justify-between gap-2 p-2 rounded-lg py-2 px-4">
-					<button
-						on:click={() => {
-							modalInfo?.load(coll.collection_id);
-							modals.details = true;
+		<div>
+			<ul class="font-semibold row p-2 rounded-lg bg-neutral-200/80">
+				<li class="place-self-center">
+					<Checkbox
+						bind:checked={checkAllInputs}
+						on:change={({ detail }) => {
+							data.collections = data.collections.map((c) => {
+								c.checked = detail;
+								return c;
+							});
 						}}
-						class="underline hover:no-underline underline-offset-2"
-					>
-						{coll.name}
-					</button>
-					<Text tag="span">{coll.total_articles}</Text>
+					/>
 				</li>
-			{/each}
-		</ul>
+				<li>Name</li>
+				<li>Total Articles</li>
+			</ul>
+			<ul>
+				{#each data.collections as coll}
+					<ul class="row p-2">
+						<li class="place-self-center">
+							<Checkbox bind:checked={coll.checked} />
+						</li>
+						<li>
+							<button
+								on:click={() => {
+									modalInfo?.load(coll.collection_id);
+									modals.details = true;
+								}}
+								class="underline hover:no-underline underline-offset-2"
+							>
+								{coll.name}
+							</button>
+						</li>
+						<li>{coll.total_articles}</li>
+					</ul>
+				{/each}
+			</ul>
+		</div>
+		{#if hasSelecteds}
+			<button class="btn btn-solid text-sm mt-4" on:click={onDelete}>Delete </button>
+		{/if}
 	{:else}
 		Dont have any collections yet
 	{/if}
 </section>
 <ModalCreate bind:show={modals.create} on:create={onCreate} />
 <ModalDetail bind:show={modals.details} bind:this={modalInfo} />
+
+<style>
+	.row {
+		display: grid;
+		grid-template-columns: 3rem 1fr 10rem;
+	}
+</style>
