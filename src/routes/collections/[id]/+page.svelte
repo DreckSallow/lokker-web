@@ -91,7 +91,7 @@
 			{/each}
 		</ul>
 	</nav>
-	<section class="flex-1 h-[300px]">
+	<section class="flex-1">
 		{#if currentInfo.isLoading}
 			<span>Loading...</span>
 		{:else if currentInfo.article}
@@ -99,7 +99,7 @@
 			<span class="ml-auto text-neutral-600 text-sm mb-4 block w-max">
 				{getDate(currentInfo.article.update_at)}
 			</span>
-			<div>{currentInfo.article?.content}</div>
+			<div class="prose prose-neutral prose-lg w-full">{@html currentInfo.article?.content}</div>
 		{:else if currentInfo.error}
 			<p>Error: {currentInfo.error}</p>
 		{/if}
