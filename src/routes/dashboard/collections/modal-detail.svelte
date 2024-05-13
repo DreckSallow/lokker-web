@@ -41,7 +41,12 @@
 	>
 		<div class="p-4">
 			<Text tag="h2" class="mb-6">{collInfo?.collection.name}</Text>
-			<button class="btn btn-solid block text-sm mb-4">New Article</button>
+			<a
+				class="btn btn-solid block text-sm mb-4 w-max"
+				href={`/dashboard/collections/${collInfo.collection.collection_id}/new-article`}
+			>
+				New Article
+			</a>
 			{#if collInfo.articles.length > 0}
 				<ul class="flex flex-col gap-2">
 					{#each collInfo.articles as art}
