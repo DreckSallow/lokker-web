@@ -3,9 +3,26 @@
 	import MarkdownEditor from '$lib/ui/components/markdown-editor.svelte';
 	import Text from '$lib/ui/components/text.svelte';
 	import { ArrowLeft, CirclePlus } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
 	export let data: PageData;
 	let content = '';
 	let title = '';
+	function create() {
+		console.log('Create action');
+		fetch('http://localhost:8000/articles', {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${JSON.parse(localStorage.getItem('auth') as any).token}`,
+				'Content-Type': 'Application/Json'
+			},
+			body: JSON.stringify({ title, content, collection_id: data.info.collection.collection_id })
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				goto('/dashboard/collections');
+			})
+			.catch(alert);
+	}
 </script>
 
 <section class="w-[70%] mx-auto my-12">
@@ -26,7 +43,11 @@
 		<MarkdownEditor bind:content />
 		{#if content.length > 0 && title.length > 0}
 			<hr class="bg-neutral-400 my-4" />
-			<button type="button" class="btn btn-solid flex ml-auto flex items-center gap-1.5">
+			<button
+				type="button"
+				class="btn btn-solid flex ml-auto flex items-center gap-1.5"
+				on:click={create}
+			>
 				<CirclePlus class="h-5 w-5 stroke-white" />
 				Create
 			</button>
