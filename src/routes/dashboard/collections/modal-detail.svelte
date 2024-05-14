@@ -15,7 +15,28 @@
 
 	$: show ? modalInfo?.show() : modalInfo?.close();
 
-	let collection_id = null;
+	let checkAllInputs = false;
+	$: hasSelecteds = collInfo?.articles.some((c) => c.checked);
+
+	let collection_id: number | null = null;
+
+	function onDelete() {
+		if (!collInfo) return;
+		fetch('http://localhost:8000/articles', {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${JSON.parse(localStorage.getItem('auth') as any).token}`,
+				'Content-Type': 'Application/json'
+			},
+			body: JSON.stringify(collInfo.articles.filter((a) => a.checked).map((a) => a.article_id))
+		})
+			.then((d) => {
+				if (d.ok) {
+					collInfo.articles = collInfo.articles.filter((a) => !a.checked);
+				}
+			})
+			.catch(alert);
+	}
 
 	export function load(coll_id: number) {
 		fetch('http://localhost:8000/collections/' + coll_id, {
@@ -56,7 +77,17 @@
 				<div class="text-sm">
 					<ul class="font-semibold row p-2 rounded-lg bg-neutral-200/80">
 						<li class="place-self-center">
-							<Checkbox checked={true} />
+							<Checkbox
+								bind:checked={checkAllInputs}
+								on:change={({ detail }) => {
+									if (collInfo) {
+										collInfo.articles = collInfo.articles.map((a) => {
+											a.checked = detail;
+											return a;
+										});
+									}
+								}}
+							/>
 						</li>
 						<li>Title</li>
 						<li>Last Updated</li>
@@ -82,6 +113,9 @@
 						{/each}
 					</ul>
 				</div>
+				{#if hasSelecteds}
+					<button class="btn btn-solid text-sm mt-4" on:click={onDelete}>Delete </button>
+				{/if}
 			{:else}
 				Dont have articles yet 😒.
 			{/if}
