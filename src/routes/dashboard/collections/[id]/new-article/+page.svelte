@@ -18,7 +18,7 @@
 			body: JSON.stringify({ title, content, collection_id: data.info.collection.collection_id })
 		})
 			.then((res) => res.json())
-			.then((data) => {
+			.then(() => {
 				goto('/dashboard/collections');
 			})
 			.catch(alert);

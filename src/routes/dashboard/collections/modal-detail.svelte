@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { getDate } from '$lib';
 	import type { Article, Collection } from '$lib/types';
+	import Checkbox from '$lib/ui/components/inputs/checkbox.svelte';
 	import Modal from '$lib/ui/components/modal.svelte';
 	import Text from '$lib/ui/components/text.svelte';
 	export let show: boolean;
@@ -13,6 +15,8 @@
 
 	$: show ? modalInfo?.show() : modalInfo?.close();
 
+	let collection_id = null;
+
 	export function load(coll_id: number) {
 		fetch('http://localhost:8000/collections/' + coll_id, {
 			method: 'GET',
@@ -25,6 +29,7 @@
 			.then((data) => {
 				collInfo = data;
 				modalInfo?.show();
+				collection_id = coll_id;
 			})
 			.catch(alert)
 			.finally(() => {});
@@ -48,22 +53,48 @@
 				New Article
 			</a>
 			{#if collInfo.articles.length > 0}
-				<ul class="flex flex-col gap-2">
-					{#each collInfo.articles as art}
-						<li class="flex items-center justify-between gap-2 p-2 rounded-lg py-2 px-4">
-							<button
-								on:click={() => alert('open details')}
-								class="underline hover:no-underline underline-offset-2"
-							>
-								{art.title}
-							</button>
-							<Text tag="span">{art.update_at}</Text>
+				<div class="text-sm">
+					<ul class="font-semibold row p-2 rounded-lg bg-neutral-200/80">
+						<li class="place-self-center">
+							<Checkbox checked={true} />
 						</li>
-					{/each}
-				</ul>
+						<li>Title</li>
+						<li>Last Updated</li>
+					</ul>
+					<ul>
+						{#each collInfo.articles as article}
+							<li>
+								<ul class="row p-2">
+									<li class="place-self-center">
+										<Checkbox bind:checked={article.checked} />
+									</li>
+									<li class="w-full">
+										<a
+											href={`/dashboard/collections/${collection_id}/article/${article.article_id}`}
+											class="underline hover:no-underline underline-offset-2"
+										>
+											{article.title}
+										</a>
+									</li>
+									<li>{getDate(article.update_at)}</li>
+								</ul>
+							</li>
+						{/each}
+					</ul>
+				</div>
 			{:else}
 				Dont have articles yet 😒.
 			{/if}
 		</div>
 	</Modal>
 {/if}
+
+<style>
+	.row {
+		display: grid;
+		grid-template-columns: 3rem 1fr 10rem;
+	}
+	.row li {
+		place-self: center;
+	}
+</style>
