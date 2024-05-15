@@ -80,7 +80,7 @@
 		<a href="/dashboard" class="btn-solid">Go to dashboard</a>
 	{/if}
 </nav>
-<Modal bind:this={loginModal}>
+<Modal bind:this={loginModal} on:close={loginModal.close}>
 	<form class="px-4 py-2 max-w-[23rem]" on:submit|preventDefault={loginSubmit}>
 		<h4 class="text-3xl font-bold mb-6">Enter your information</h4>
 		<div class="mb-4 grid grid-cols-4 row-gap-4 items-center">
