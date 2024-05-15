@@ -1,5 +1,6 @@
 <script lang="ts">
 	export type { PageData } from './$types';
+	import { api } from '$lib/utils/api';
 	import Checkbox from '$lib/ui/components/inputs/checkbox.svelte';
 	import Text from '$lib/ui/components/text.svelte';
 	import ModalCreate from './modal-create.svelte';
@@ -18,7 +19,8 @@
 	$: hasSelecteds = data.collections.some((c) => c.checked);
 
 	function onDelete() {
-		fetch('http://localhost:8000/collections', {
+		console.log(data.collections);
+		fetch(api('/collections'), {
 			method: 'DELETE',
 			headers: {
 				Authorization: `Bearer ${JSON.parse(localStorage.getItem('auth') as any).token}`,

@@ -5,6 +5,7 @@
 	import { ArrowLeft, RefreshCcw } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { debounce } from '$lib';
+	import { api } from '$lib/utils/api';
 	export let data: PageData;
 
 	let content = data.article.content;
@@ -19,8 +20,7 @@
 	$: if (content && title) checker();
 
 	function update() {
-		console.log('update action');
-		fetch(`http://localhost:8000/articles/${data.article.article_id}`, {
+		fetch(api('/articles/', data.article.articl_id), {
 			method: 'PUT',
 			headers: {
 				Authorization: `Bearer ${JSON.parse(localStorage.getItem('auth') as any).token}`,

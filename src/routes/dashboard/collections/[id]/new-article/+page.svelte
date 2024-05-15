@@ -4,12 +4,12 @@
 	import Text from '$lib/ui/components/text.svelte';
 	import { ArrowLeft, CirclePlus } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
+	import { api } from '$lib/utils/api';
 	export let data: PageData;
 	let content = '';
 	let title = '';
 	function create() {
-		console.log('Create action');
-		fetch('http://localhost:8000/articles', {
+		fetch(api('/articles'), {
 			method: 'POST',
 			headers: {
 				Authorization: `Bearer ${JSON.parse(localStorage.getItem('auth') as any).token}`,

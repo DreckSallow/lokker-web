@@ -4,6 +4,7 @@
 	import Checkbox from '$lib/ui/components/inputs/checkbox.svelte';
 	import Modal from '$lib/ui/components/modal.svelte';
 	import Text from '$lib/ui/components/text.svelte';
+	import { api } from '$lib/utils/api';
 	export let show: boolean;
 
 	let modalInfo: Modal | null = null;
@@ -22,7 +23,7 @@
 
 	function onDelete() {
 		if (!collInfo) return;
-		fetch('http://localhost:8000/articles', {
+		fetch(api('/articles'), {
 			method: 'DELETE',
 			headers: {
 				Authorization: `Bearer ${JSON.parse(localStorage.getItem('auth') as any).token}`,
@@ -39,7 +40,7 @@
 	}
 
 	export function load(coll_id: number) {
-		fetch('http://localhost:8000/collections/' + coll_id, {
+		fetch(api('/collections/', coll_id), {
 			method: 'GET',
 			headers: {
 				Authorization: `Bearer ${JSON.parse(localStorage.getItem('auth') as any).token}`,

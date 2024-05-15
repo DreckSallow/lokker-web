@@ -4,6 +4,7 @@
 	import Text from '$lib/ui/components/text.svelte';
 	import type { UserProfile } from '$lib/types';
 	import { ArrowUpFromLine } from 'lucide-svelte';
+	import { api } from '$lib/utils/api';
 	export let data: PageData;
 	$: data.user.img =
 		'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR__2IIAULCR-xberpmuxf-9Jx3cJZLJgLm4tSb9cDwRQ&s';
@@ -23,7 +24,7 @@
 		formData.append('bio', userForm.bio);
 		formData.append('avatar', userForm.img);
 		updateAction.is_loading = true;
-		fetch(`http://localhost:8000/profiles/${data.user.user_id}`, {
+		fetch(api('/profiles/', data.user.user_id), {
 			method: 'PUT',
 			body: formData
 		})

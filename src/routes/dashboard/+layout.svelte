@@ -1,15 +1,20 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
-	import { Newspaper, User } from 'lucide-svelte';
+	import { Newspaper, PowerOff, User } from 'lucide-svelte';
 	import { page } from '$app/stores';
 	import type { LayoutData } from './$types';
+	import { goto } from '$app/navigation';
 
 	export let data: LayoutData;
 	const user = writable(null);
 
 	$: user.set(data.user);
 	setContext('user', data.user);
+	function logout() {
+		localStorage.removeItem('auth');
+		goto('/');
+	}
 </script>
 
 <main class="flex flex-row">
@@ -39,6 +44,14 @@
 					</a>
 				</li>
 			</ul>
+			<hr class="bg-neutral-400 my-5" />
+			<button
+				on:click={logout}
+				class="flex gap-2 items-center font-semibold hover:bg-neutral-100 p-2 rounded-lg w-full"
+			>
+				<PowerOff class="h-5 w-5" />
+				Log out
+			</button>
 		</nav>
 	</aside>
 	<slot></slot>

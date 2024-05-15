@@ -1,10 +1,12 @@
 import type { UserProfile } from "$lib/types";
+import { api } from "$lib/utils/api";
 import type { PageLoad } from "./$types";
 
 export const load: PageLoad = async ({ fetch }) => {
 
   async function get(): Promise<UserProfile> {
-    return (await fetch('http://localhost:8000/profiles/' + 8)).json();
+    //FIXME: fix the static user id
+    return (await fetch(api("/profiles/", 8))).json();
   }
 
   return {

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Modal from '$lib/ui/components/modal.svelte';
 	import Text from '$lib/ui/components/text.svelte';
+	import { api } from '$lib/utils/api';
 	import { createEventDispatcher } from 'svelte';
 	export let show: boolean;
 
@@ -12,7 +13,7 @@
 	$: show ? modalCreate?.show() : modalCreate?.close();
 
 	function createColl() {
-		fetch('http://localhost:8000/collections', {
+		fetch(api('/collections'), {
 			method: 'POST',
 			headers: {
 				Authorization: `Bearer ${JSON.parse(localStorage.getItem('auth') as any).token}`,
@@ -22,7 +23,11 @@
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				dispatch('create', { name: data.name, total_articles: 0 });
+				dispatch('create', {
+					name: data.name,
+					total_articles: 0,
+					collection_id: data.collection_id
+				});
 				show = false;
 			})
 			.catch(alert)
