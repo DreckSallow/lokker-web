@@ -10,6 +10,8 @@ export default {
         "page": "#ffffff", 
         "subtext":"#666666",
         "headtext":"#171717",
+        "line":"#828282",
+        "softline":"#e5e5e5b3",
         "brand": "#141d26",
         "brand-soft": "#e0e4ea"
       }

@@ -8,7 +8,7 @@ body {
 }
 @layer components {
 	.btn {
-		@apply rounded-xl py-2 px-4;
+		@apply rounded-lg py-2 px-4 flex items-center gap-2;
 	}
 
 	.btn-solid {
@@ -25,5 +25,14 @@ body {
 
 	.ui-circle {
 		@apply rounded-full aspect-square;
+	}
+
+	/* inputs */
+	.input {
+		@apply rounded-md border border-line py-2 px-4 outline-none;
+
+		&.error {
+			@apply border-red-300;
+		}
 	}
 }
