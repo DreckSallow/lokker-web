@@ -31,7 +31,7 @@
 		<h1 class="font-bold text-4xl mb-2 mt-4">Search Collections</h1>
 		<h3 class="text-neutral-600 font-normal text-lg mb-6">Find the perfect read</h3>
 		<div
-			class="border border-neutral-400 rounded-xl flex justify-between overflow-hidden pl-3 w-[24rem]"
+			class="border border-neutral-400 rounded-lg flex justify-between overflow-hidden pl-3 w-[24rem]"
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"

@@ -5,14 +5,14 @@
 	import Modal from '$lib/ui/components/modal.svelte';
 	import Text from '$lib/ui/components/text.svelte';
 	import { api } from '$lib/utils/api';
+
+	type ArticleRow = { checked: boolean } & Article;
+
 	export let show: boolean;
 
 	let modalInfo: Modal | null = null;
 
-	let collInfo: {
-		collection: Collection;
-		articles: Pick<Article, 'article_id' | 'title' | 'update_at'>[];
-	} | null = null;
+	let collInfo: Option<{ collection: Collection; articles: ArticleRow[] }> = null;
 
 	$: show ? modalInfo?.show() : modalInfo?.close();
 
@@ -32,7 +32,7 @@
 			body: JSON.stringify(collInfo.articles.filter((a) => a.checked).map((a) => a.article_id))
 		})
 			.then((d) => {
-				if (d.ok) {
+				if (d.ok && collInfo) {
 					collInfo.articles = collInfo.articles.filter((a) => !a.checked);
 				}
 			})
@@ -69,7 +69,7 @@
 		<div class="p-4">
 			<Text tag="h2" class="mb-6">{collInfo?.collection.name}</Text>
 			<a
-				class="btn btn-solid block text-sm mb-4 w-max"
+				class="btn btn-solid block text-sm mb-4 w-max ml-auto"
 				href={`/dashboard/collections/${collInfo.collection.collection_id}/new-article`}
 			>
 				New Article

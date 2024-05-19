@@ -1,15 +1,16 @@
 <script lang="ts">
+	import { CirclePlus } from 'lucide-svelte';
 	export type { PageData } from './$types';
 	import { api } from '$lib/utils/api';
 	import Checkbox from '$lib/ui/components/inputs/checkbox.svelte';
+	import Button from '$lib/ui/components/button.svelte';
 	import Text from '$lib/ui/components/text.svelte';
 	import ModalCreate from './modal-create.svelte';
 	import ModalDetail from './modal-detail.svelte';
 
 	export let data = PageData;
-	function onCreate(e: CustomEvent) {
-		data.collections = [e.detail, ...data.collections];
-	}
+
+	let modalInfo: ModalDetail | null = null;
 	let modals = {
 		create: false,
 		details: false
@@ -19,7 +20,6 @@
 	$: hasSelecteds = data.collections.some((c) => c.checked);
 
 	function onDelete() {
-		console.log(data.collections);
 		fetch(api('/collections'), {
 			method: 'DELETE',
 			headers: {
@@ -35,8 +35,9 @@
 			})
 			.catch(alert);
 	}
-
-	let modalInfo: ModalDetail | null = null;
+	function onCreate(e: CustomEvent) {
+		data.collections = [e.detail, ...data.collections];
+	}
 </script>
 
 <section class="w-[70%] mx-auto my-12">
@@ -44,9 +45,10 @@
 		<Text tag="h1" class="mb-2 text-headtext">Collections</Text>
 		<Text tag="span" class="text-subtext">Create, Edit & Remove your collections</Text>
 	</header>
-	<button class="mb-6 block btn btn-solid" on:click={() => (modals.create = true)}>
-		Create New
-	</button>
+	<Button class="ml-auto mb-6 text-sm" on:click={() => (modals.create = true)}>
+		Add new
+		<CirclePlus class="stroke-white h-4 w-4" />
+	</Button>
 
 	{#if data.collections.length > 0}
 		<div>

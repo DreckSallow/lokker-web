@@ -1,18 +1,25 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import Avatar from '../../components/imgs/avatar.svelte';
+	import { Input } from '$lib/ui/components/inputs';
 	import Text from '$lib/ui/components/text.svelte';
 	import type { UserProfile } from '$lib/types';
 	import { ArrowUpFromLine } from 'lucide-svelte';
 	import { api } from '$lib/utils/api';
+	import Button from '$lib/ui/components/button.svelte';
+
 	export let data: PageData;
+
 	$: data.user.img =
 		'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR__2IIAULCR-xberpmuxf-9Jx3cJZLJgLm4tSb9cDwRQ&s';
+
 	let userForm = Object.keys(data.user).reduce(
 		(acc, key) => ({ ...acc, [key]: data.user[key] }),
 		{}
 	) as UserProfile;
+
 	$: userAvatar = data.user.img as string;
+
 	let updateAction = {
 		is_loading: false
 	};
@@ -77,38 +84,35 @@
 		<div class="mt-6 flex flex-col gap-3">
 			<label>
 				<Text tag="span" class="font-semibold block mb-2">Bio</Text>
-				<textarea
+				<Input
+					tag="textarea"
+					required
 					bind:value={userForm.bio}
-					class="rounded-md py-2 px-3 border-2 border-neutral-200/70 w-full"
-					spellcheck="false"
+					class="w-full border-2 min-h-44 max-h-64"
 				/>
 			</label>
 			<label>
 				<Text tag="span" class="font-semibold block mb-2">Website</Text>
-				<input
-					type="url"
-					bind:value={userForm.website_url}
-					class="rounded-md py-2 px-3 border-2 border-neutral-200/70 w-full"
-				/>
+				<Input type="url" required bind:value={userForm.website_url} class="w-full border-2" />
 			</label>
 			<label>
 				<Text tag="span" class="font-semibold block mb-2">Twitter</Text>
-				<input
-					type="url"
-					bind:value={userForm.twitter_url}
-					class="rounded-md py-2 px-3 border-2 border-neutral-200/70 w-full"
-				/>
+				<Input type="url" required bind:value={userForm.twitter_url} class="w-full border-2" />
 			</label>
 		</div>
 		<div class="mt-6">
-			<button
+			<Button loading={updateAction.is_loading} on:click={updateProfile} class="ml-auto">
+				<ArrowUpFromLine class="stroke-white h-4 w-4" />
+				{updateAction.is_loading ? 'Loading...' : 'Update'}
+			</Button>
+			<!--<button
 				class="btn btn-solid flex items-center justify-center gap-2 text-sm font-semibold ml-auto"
 				on:click={updateProfile}
 				disabled={updateAction.is_loading}
 			>
 				<ArrowUpFromLine class="stroke-white h-4 w-4" />
 				{updateAction.is_loading ? 'Loading...' : 'Update'}
-			</button>
+			</button>-->
 		</div>
 	</div>
 </section>

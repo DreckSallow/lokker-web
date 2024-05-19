@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Input } from '$lib/ui/components/inputs';
 	import Modal from '$lib/ui/components/modal.svelte';
 	import Text from '$lib/ui/components/text.svelte';
 	import { api } from '$lib/utils/api';
@@ -38,13 +39,8 @@
 <Modal bind:this={modalCreate} on:close={() => (show = false)}>
 	<form on:submit|preventDefault={createColl} class="p-2">
 		<label class="w-full">
-			<Text tag="span" class="font-semibold block mb-2">Collection name</Text>
-			<input
-				type="text"
-				bind:value={modalInput}
-				required
-				class="rounded-md border border-neutral-300 p-2.5 w-full"
-			/>
+			<Text tag="h4" class="font-semibold block mb-2">Collection name</Text>
+			<Input type="text" bind:value={modalInput} required />
 		</label>
 		<div class="flex justify-between gap-4 mt-4">
 			<button
