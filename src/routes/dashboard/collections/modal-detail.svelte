@@ -6,6 +6,8 @@
 	import Modal from '$lib/ui/components/modal.svelte';
 	import Text from '$lib/ui/components/text.svelte';
 	import { api } from '$lib/utils/api';
+	import { CirclePlus } from 'lucide-svelte';
+	import { toast } from 'svelte-sonner';
 
 	type ArticleRow = { checked: boolean } & Article;
 
@@ -37,7 +39,9 @@
 					collInfo.articles = collInfo.articles.filter((a) => !a.checked);
 				}
 			})
-			.catch(alert);
+			.catch(() => {
+				toast.error('Error deleting articles');
+			});
 	}
 
 	export function load(coll_id: number) {
@@ -54,7 +58,9 @@
 				modalInfo?.show();
 				collection_id = coll_id;
 			})
-			.catch(alert)
+			.catch(() => {
+				toast.error('Error loading collection detail');
+			})
 			.finally(() => {});
 	}
 </script>
@@ -68,12 +74,13 @@
 >
 	<BoxLoader class="p-4" tag="div" loading={!collInfo}>
 		{#if collInfo}
-			<Text tag="h2" class="mb-6">{collInfo?.collection.name}</Text>
+			<Text tag="h2" class="mb-2">{collInfo?.collection.name}</Text>
 			<a
-				class="btn btn-solid block text-sm mb-4 w-max ml-auto"
+				class="btn btn-solid block text-sm mb-4 w-max ml-auto flex items-center gap-2"
 				href={`/dashboard/collections/${collInfo.collection.collection_id}/new-article`}
 			>
 				New Article
+				<CirclePlus class="h-4 w-4 stroke-white" />
 			</a>
 			{#if collInfo.articles.length > 0}
 				<div class="text-sm">
