@@ -38,6 +38,7 @@
 		"@tiptap/core": "^2.3.1",
 		"@tiptap/pm": "^2.3.1",
 		"@tiptap/starter-kit": "^2.3.1",
-		"lucide-svelte": "^0.375.0"
+		"lucide-svelte": "^0.375.0",
+		"svelte-sonner": "^0.3.24"
 	}
 }
