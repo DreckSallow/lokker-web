@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CirclePlus } from 'lucide-svelte';
+	import { CirclePlus, Pencil } from 'lucide-svelte';
 	export type { PageData } from './$types';
 	import { api } from '$lib/utils/api';
 	import Checkbox from '$lib/ui/components/inputs/checkbox.svelte';
@@ -7,13 +7,19 @@
 	import Text from '$lib/ui/components/text.svelte';
 	import ModalCreate from './modal-create.svelte';
 	import ModalDetail from './modal-detail.svelte';
+	import ModalEdit from './modal-edit.svelte';
 
 	export let data = PageData;
 
 	let modalInfo: ModalDetail | null = null;
 	let modals = {
 		create: false,
-		details: false
+		details: false,
+		edit: {
+			show: false,
+			name: '',
+			id: null
+		}
 	};
 
 	let checkAllInputs = false;
@@ -37,6 +43,14 @@
 	}
 	function onCreate(e: CustomEvent) {
 		data.collections = [e.detail, ...data.collections];
+	}
+	function onEdit(e: CustomEvent) {
+		if (!modals.edit.id) return;
+		let coll = data.collections.find((c) => c.collection_id == modals.edit.id);
+		if (coll) {
+			coll.name = e.detail;
+		}
+		data.collections = data.collections;
 	}
 </script>
 
@@ -66,6 +80,7 @@
 				</li>
 				<li>Name</li>
 				<li>Total Articles</li>
+				<li>Edit Name</li>
 			</ul>
 			<ul>
 				{#each data.collections as coll}
@@ -85,6 +100,18 @@
 							</button>
 						</li>
 						<li>{coll.total_articles}</li>
+						<li class="place-self-center">
+							<button
+								on:click={() => {
+									modals.edit.id = coll.collection_id;
+									modals.edit.name = coll.name;
+									modals.edit.show = true;
+								}}
+								class=""
+							>
+								<Pencil class="h-4 w-4" />
+							</button>
+						</li>
 					</ul>
 				{/each}
 			</ul>
@@ -97,11 +124,17 @@
 	{/if}
 </section>
 <ModalCreate bind:show={modals.create} on:create={onCreate} />
+<ModalEdit
+	bind:show={modals.edit.show}
+	on:edit={onEdit}
+	modalInput={modals.edit.name}
+	collId={modals.edit.id}
+/>
 <ModalDetail bind:show={modals.details} bind:this={modalInfo} />
 
 <style>
 	.row {
 		display: grid;
-		grid-template-columns: 3rem 1fr 10rem;
+		grid-template-columns: 3rem 1fr 10rem 5rem;
 	}
 </style>

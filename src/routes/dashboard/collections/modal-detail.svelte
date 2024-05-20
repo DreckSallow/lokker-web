@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getDate } from '$lib';
 	import type { Article, Collection } from '$lib/types';
+	import BoxLoader from '$lib/ui/components/box-loader.svelte';
 	import Checkbox from '$lib/ui/components/inputs/checkbox.svelte';
 	import Modal from '$lib/ui/components/modal.svelte';
 	import Text from '$lib/ui/components/text.svelte';
@@ -58,15 +59,15 @@
 	}
 </script>
 
-{#if collInfo}
-	<Modal
-		bind:this={modalInfo}
-		on:close={() => {
-			show = false;
-			collInfo = null;
-		}}
-	>
-		<div class="p-4">
+<Modal
+	bind:this={modalInfo}
+	on:close={() => {
+		show = false;
+		collInfo = null;
+	}}
+>
+	<BoxLoader class="p-4" tag="div" loading={!collInfo}>
+		{#if collInfo}
 			<Text tag="h2" class="mb-6">{collInfo?.collection.name}</Text>
 			<a
 				class="btn btn-solid block text-sm mb-4 w-max ml-auto"
@@ -120,9 +121,9 @@
 			{:else}
 				Dont have articles yet 😒.
 			{/if}
-		</div>
-	</Modal>
-{/if}
+		{/if}
+	</BoxLoader>
+</Modal>
 
 <style>
 	.row {

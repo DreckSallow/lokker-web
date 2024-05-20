@@ -3,7 +3,8 @@
 	import { createEventDispatcher } from 'svelte';
 
 	type BtnType = 'solid' | 'outline';
-	export let type: BtnType = 'solid';
+	export let variant: BtnType = 'solid';
+	export let type: Option<'submit' | 'reset' | 'button'> = 'button';
 	export let loading = false;
 	export let loadingText = 'Please wait';
 	let className = '';
@@ -17,8 +18,9 @@
 </script>
 
 <button
-	class={`btn ${styleBind[type]} ${loading ? 'bg-brand/70' : ''} ${className}`}
+	class={`btn ${styleBind[variant]} ${loading ? 'bg-brand/70' : ''} ${className}`}
 	disabled={loading}
+	{type}
 	on:click={() => !loading && dispatch('click')}
 >
 	{#if loading}
