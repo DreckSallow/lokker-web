@@ -45,7 +45,7 @@
 			<input
 				type="text"
 				class="outline-none flex-1 px-4 py-3 text-brand placeholder:text-neutral-400"
-				placeholder="Buscar collecciones..."
+				placeholder="Search collections..."
 				spellcheck="false"
 				on:blur={onBlurSearch}
 				on:keyup={onEnter}
