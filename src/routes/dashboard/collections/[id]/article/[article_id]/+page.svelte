@@ -44,14 +44,7 @@
 		<Text tag="h1" class="mb-2 text-headtext">{data.collection.name}</Text>
 	</header>
 	<div class="content-section">
-		<input
-			type="text"
-			spellcheck="false"
-			class="border-b border-neutral-200 p-3 w-full font-semibold outline-none placeholder:text-neutral-400 text-[3.5rem] font-black text-neutral-900"
-			placeholder="Title"
-			bind:value={title}
-		/>
-		<MarkdownEditor bind:content />
+		<MarkdownEditor bind:content bind:title />
 		{#if content.length > 0 && title.length > 0 && hasUpdated}
 			<hr class="bg-neutral-400 my-4" />
 			<button
